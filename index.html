@@ -136,8 +136,8 @@ $ ./INSTALL.sh</code></pre>
 	<li>
 	<p>Downloading lookup table and species-level database from our web server:</p>
 
-	<pre><code>$ wget ftp://ftp.lanl.gov/public/genome/gottcha/GOTTCHA_lookup.tar.gz
-$ wget ftp://ftp.lanl.gov/public/genome/gottcha/GOTTCHA_BACTERIA_c3514_k24_u24_xHUMAN3x.species.tar.gz</code></pre>
+	<pre><code>$ wget ftp://ftp.lanl.gov/public/genome/gottcha/latest/GOTTCHA_lookup.tar.gz
+$ wget ftp://ftp.lanl.gov/public/genome/gottcha/latest/GOTTCHA_BACTERIA_c4937_k24_u30_xHUMAN3x.species.tar.gz</code></pre>
 
 	<p>If you have any difficulty obtaining the databases, please contact us.</p>
 	</li>
@@ -145,7 +145,7 @@ $ wget ftp://ftp.lanl.gov/public/genome/gottcha/GOTTCHA_BACTERIA_c3514_k24_u24_x
 	<p>Unpacking and decompressing the previous downloads:</p>
 
 	<pre><code>$ tar -zxvf GOTTCHA_lookup.tar.gz
-$ tar -zxvf GOTTCHA_BACTERIA_c3514_k24_u24.species.tar.gz</code></pre>
+$ tar -zxvf GOTTCHA_BACTERIA_c4937_k24_u30_xHUMAN3x.species.tar.gz</code></pre>
 	</li>
 	<li>
 	<p>Running gottcha.pl: </p>
@@ -154,7 +154,7 @@ $ tar -zxvf GOTTCHA_BACTERIA_c3514_k24_u24.species.tar.gz</code></pre>
       --threads 8             \
       --outdir ./             \
       --input test/test.fastq \
-      --database database/GOTTCHA_BACTERIA_c3514_k24_u24.species</code></pre>
+      --database database/GOTTCHA_BACTERIA_c4937_k24_u30_xHUMAN3x.species</code></pre>
 	</li>
 	<li><p>Enjoying the result at './test.gottcha.tsv'.</p></li>
 </ol>
