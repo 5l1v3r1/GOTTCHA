@@ -49,6 +49,21 @@ superior performance compared with other available tools.</p>
 <a id="change-log" class="anchor" href="#change-log" aria-hidden="true"><span class="octicon octicon-link"></span></a>What's new?
 </h3>
 
+<p>New Database Release (2015/09/21):
+<li>We have updated GOTTCHA pre-computed bacterial and viral databases at phylum, class, order, family, genus, species and strain levels. They are available at our <a target="_new" href="ftp://ftp.lanl.gov/public/genome/gottcha/GOTTCHA_database_v20150825/">ftp site</a>.
+
+The new signature databases were generated using NCBI RefSeq complete genomes (as of 2015/08/25, urls are provided below). The raw genomes were pre-processed to remove or replace sequences based on the updated NCBI GenBank records. Besides, new databases uses a custom taxonomy table. Known issues in previous version have been fixed, e.g. eukaryotic taxonomies, no rank at high levels in viral databases...etc. Plain FASTA files and database stats are provided at FASTA/ and STATS/ directories. In the variant *_xHUMAN3x.* databases, all human 24-mers removed from the original databases were derived from the GRCh38.p2 (Genome Reference Consortium), HuRef (J. Craig Venter Institute), and CHM1_1.0 (Washington U. School of Medicine) assemblies including unplaced scaffolds.
+
+Bacterial database:
+source: http://ftp.ncbi.nlm.nih.gov/genomes/Bacteria/
+after pre-processed: 2669 genomes, 4937 sequences
+
+Viral database
+source: http://ftp.ncbi.nlm.nih.gov/genomes/Viruses/
+after pre-processed: 4420 genomes, 5900 sequences
+</li>
+</p>
+
 <p>Updates (2015/07/20):
 <li>Databases can be downloaded through FTP server <a target="_new" href="ftp://ftp.lanl.gov/public/genome/gottcha/">ftp://ftp.lanl.gov/public/genome/gottcha/</a>.
 As a backup source, the human genome removed databases are also hosted at <a target="_new" href="https://drive.google.com/folderview?id=0B7RPWOdnygzafkNMZklSWXVic0c3LXhyTzFGaFR5QmNtLWFNSUpJdWltMnRlVXpIUmZuU3M&usp=sharing">Google Drive</a>. </li>
