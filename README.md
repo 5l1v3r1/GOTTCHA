@@ -38,15 +38,15 @@ in the "test" directory. More details are stated in the INSTRUCTION section.
 
 3. Downloading lookup table and species-level database from our web server:
  
-        $ wget ftp://ftp.lanl.gov/public/genome/gottcha/GOTTCHA_lookup.tar.gz
-        $ wget ftp://ftp.lanl.gov/public/genome/gottcha/GOTTCHA_BACTERIA_c3514_k24_u24_xHUMAN3x.species.tar.gz
+        $ wget ftp://ftp.lanl.gov/public/genome/gottcha/GOTTCHA_database_v20150825/GOTTCHA_lookup.tar.gz
+        $ wget ftp://ftp.lanl.gov/public/genome/gottcha/GOTTCHA_database_v20150825/GOTTCHA_BACTERIA_c4937_k24_u30_xHUMAN3x.species.tar.gz
    
    If you have any difficulty obtaining the databases, please contact Po-E Li <po-e@lanl.gov>.
 
 4. Unpacking and decompressing archives:
 
         $ tar -zxvf GOTTCHA_lookup.tar.gz
-        $ tar -zxvf GOTTCHA_BACTERIA_c3514_k24_u24_xHUMAN3x.species.tar.gz
+        $ tar -zxvf GOTTCHA_BACTERIA_c4937_k24_u30_xHUMAN3x.species.tar.gz
 	
 5. Running gottcha.pl: 
 
@@ -54,7 +54,7 @@ in the "test" directory. More details are stated in the INSTRUCTION section.
              --threads 8             \
              --outdir ./             \
              --input test/test.fastq \
-             --database database/GOTTCHA_BACTERIA_c3514_k24_u24_xHUMAN3x.species
+             --database database/GOTTCHA_BACTERIA_c4937_k24_u30_xHUMAN3x.species
 
 6. Enjoying the result at './test.gottcha.tsv'.
 
@@ -70,18 +70,16 @@ step-by-step, please read README_FULL.md.
 -------------------------------------------------------------------
 ### Obtaining GOTTCHA
 
-The source codes can be downloading from [here](https://bitbucket.org/poeli/gottcha).
+The source codes can be downloading from [here](https://github.com/LANL-Bioinformatics/GOTTCHA).
 The pre-computed databases need to be downloaded separately from our web server.
 Please see below in the [Obtaining Pre-computed Databases] section.
        
 You can use "git" to obtain the package:
 
-        $ git clone https://bitbucket.org/poeli/gottcha
+        $ git clone https://github.com/LANL-Bioinformatics/GOTTCHA
 
 or download the compressed archive in
- [zip](https://bitbucket.org/poeli/gottcha/get/master.zip),
- [gz](https://bitbucket.org/poeli/gottcha/get/master.tar.gz) or 
- [bz2](https://bitbucket.org/poeli/gottcha/get/master.tar.bz2).
+ [zip](https://github.com/LANL-Bioinformatics/GOTTCHA/archive/master.zip)
 
 -------------------------------------------------------------------
 ### Installation
@@ -124,13 +122,13 @@ corresponding *.md5 file for verification.
 
 You can use the 'wget' command to download both archives, one at a time:
 
-        $ wget ftp://ftp.lanl.gov/public/genome/gottcha/GOTTCHA_lookup.tar.gz
-        $ wget ftp://ftp.lanl.gov/public/genome/gottcha/GOTTCHA_BACTERIA_c3514_k24_u24_xHUMAN3x.species.tar.gz
+        $ wget ftp://ftp.lanl.gov/public/genome/gottcha/GOTTCHA_database_v20150825/GOTTCHA_lookup.tar.gz
+        $ wget ftp://ftp.lanl.gov/public/genome/gottcha/GOTTCHA_database_v20150825/GOTTCHA_BACTERIA_c4937_k24_u30_xHUMAN3x.species.tar.gz
 
 Then use 'tar' to unpack and decompress both archives:
 
         $ tar -zxvf GOTTCHA_lookup.tar.gz
-        $ tar -zxvf GOTTCHA_BACTERIA_c3514_k24_u24_xHUMAN3x.species.tar.gz
+        $ tar -zxvf GOTTCHA_BACTERIA_c4937_k24_u30_xHUMAN3x.species.tar.gz
 
 Files will be expanded to ./database directory by default.
 
@@ -146,24 +144,7 @@ Files will be expanded to ./database directory by default.
  > 
 
 Here is a list of the available pre-computed databases. Note that these databases are
-also available in FASTA format at gottcha/FASTA/:
-
-  * GOTTCHA_BACTERIA_c3514_k24_u24.class.tar.gz (4.6GB)
-  * GOTTCHA_BACTERIA_c3514_k24_u24.family.tar.gz (4.6GB)
-  * GOTTCHA_BACTERIA_c3514_k24_u24.genus.tar.gz (4.5GB)
-  * GOTTCHA_BACTERIA_c3514_k24_u24.order.tar.gz (4.6GB)
-  * GOTTCHA_BACTERIA_c3514_k24_u24.phylum.tar.gz (4.6GB)
-  * GOTTCHA_BACTERIA_c3514_k24_u24.species.tar.gz (4.3GB)
-  * GOTTCHA_BACTERIA_c3514_k24_u24.strain.tar.gz (3.9GB)
-  * GOTTCHA_BACTERIA_c3514_k24_u24_xHUMAN3x.genus.tar.gz (4.5GB)
-  * GOTTCHA_BACTERIA_c3514_k24_u24_xHUMAN3x.species.tar.gz (4.3GB)
-  * GOTTCHA_BACTERIA_c3514_k24_u24_xHUMAN3x.strain.tar.gz (3.8GB)
-  * GOTTCHA_VIRUSES_c3498_k85_u24.genus.tar.gz (71MB)
-  * GOTTCHA_VIRUSES_c3498_k85_u24.species.tar.gz (68MB)
-  * GOTTCHA_VIRUSES_c3498_k85_u24.strain.tar.gz (68MB)
-  * GOTTCHA_VIRUSES_c3498_k85_u24_xHUMAN3x.genus.tar.gz (71MB)
-  * GOTTCHA_VIRUSES_c3498_k85_u24_xHUMAN3x.species.tar.gz (68MB)
-  * GOTTCHA_VIRUSES_c3498_k85_u24_xHUMAN3x.strain.tar.gz (68MB)
+also available in FASTA format at gottcha/[VERSION]/FASTA/..
 
 Note: If you have any difficulty obtaining the databases, please contact Po-E Li <po-e@lanl.gov>.
 
