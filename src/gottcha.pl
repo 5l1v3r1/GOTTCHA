@@ -36,7 +36,7 @@ use FindBin qw($RealBin);
 use strict;
 
 # environment setup
-my $ver        = "1.0b";
+my $ver        = "1.0c";
 $ENV{PATH}     = "$RealBin:$RealBin/../ext/bin:$ENV{PATH}";
 $ENV{PERL5LIB} = "$RealBin/../ext/lib/perl5:$ENV{PERL5LIB}";
 
@@ -87,7 +87,7 @@ my $noPHit     = $opt{noPlasmidHit};
 my $PREFIX     = defined $opt{prefix}  ? $opt{prefix}  : $fn;
 my $OUTDIR     = defined $opt{outdir}  ? $opt{outdir}  : ".";
 my $TMPDIR     = "${PREFIX}_temp";
-my $RELABU     = defined $opt{relAbu}  ? $opt{relAbu} : "LINEAR_DOC";
+my $RELABU     = defined $opt{relAbu}  ? $opt{relAbu} : "ROLLUP_DOC";
 my $MODE       = defined $opt{mode}    ? $opt{mode} : "summary";
 my $BWAMETHOD  = "mem";
 my $BWA_OPT    = defined $opt{bwaOpt}  ? $opt{bwaOpt} : "-k 30 -T 0 -B 100 -O 100 -E 100";
@@ -542,9 +542,9 @@ USAGE: $0 [OPTIONS] --input <FASTQ> --database <DATABASE_PATH>
                            [default: <INPUT_FILENAME_PREFIX>]
     --relAbu|r   <STRING>  The field will be used to calculate relative
                            abundance. You can specify one of the following
-                           fields: "LINEAR_LENGTH", "TOTAL_BP_MAPPED",
+                           fields: "ROLLUP_DOC", "LINEAR_LENGTH", "TOTAL_BP_MAPPED",
                            "HIT_COUNT", "LINEAR_DOC".
-                           [default: LINEAR_DOC]
+                           [default: ROLLUP_DOC]
     --mode|m     <STRING>  You can specify one of the output mode:
                            "summary" : this mode will report a summary of
                                        profiling result to *.gottcha.tsv file.

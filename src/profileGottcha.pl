@@ -991,7 +991,7 @@ sub computeData {
         ."UNIQUE_DB_LENGTH\t".              "FULL_REFDB_LENGTH\t".          "LINEAR_COV\t"
         ."HIT_COUNT\t".                     "HIT_COUNT_PLASMID\t".          "READ_COUNT\t"
 		."FULL_HIT_COUNT\t".                "TOTAL_BP_MAPPED\t".            "LINEAR_DOC\t"
-        ."UREF_DOC\t".                      "UREF_CMAX\t".                  "FRAC_HITS_POSSIBLE\t"
+        ."UREF_DOC\t".                      "ROLLUP_DOC\t".                 "UREF_CMAX\t".                  "FRAC_HITS_POSSIBLE\t"
         ."FRAC_BASES_POSSIBLE\t".           "MEAN_HIT_LENGTH\t".            "MEAN_LINEAR_HIT_LENGTH\t"
         #------------------------------------------------------------------------------------------
         ."best_SUBRANK\t"                  
@@ -1041,6 +1041,7 @@ sub computeData {
         my $fullRefDBlength        = $hitTree->{$_[2]}->{$rankName}->{REFSIZE};      # total bases in the COMPLETE reference (not just the unique bases)
         my $linearDOC              = sprintf("%.15f", $totalBpMapped / $linearLength);
         my $uRefDOC                = sprintf("%.15f", $totalBpMapped / $uniqueDBlength);
+        my $rollupDOC              = $hitTree->{$_[2]}->{$rankName}->{ROLLUPDOC};      # total rollup uRefDOC
         # Max Coverage of RefDB Possible in Sample = Cmax = L0/l0 = (Total Possible Bases) / (unique refDB Bases)
         my $uRefCmax               = sprintf("%.15f", $inputBases/$uniqueDBlength);
         # Fraction of Total Hits Possible = uN = Ni/N0 = (HIT_COUNT, genome i) / (Total Potential Hits)
@@ -1097,6 +1098,7 @@ sub computeData {
                       .$totalBpMapped."\t"
                       .$linearDOC."\t"
                       .$uRefDOC."\t"
+                      .$rollupDOC."\t"
                       .$uRefCmax."\t"
                       .$fracHitsPossible."\t"
                       .$fracBasesPossible."\t"
@@ -1282,8 +1284,9 @@ sub computeRepliconData {
                   ."UNIQUE_DB_LENGTH\t".       "FULL_REFDB_LENGTH\t".         "LINEAR_COV\t"
                   ."HIT_COUNT\t".              "HIT_COUNT_PLASMID\t".         "READ_COUNT\t"
 		          ."FULL_HIT_COUNT\t".         "TOTAL_BP_MAPPED\t".           "LINEAR_DOC\t"
-                  ."UREF_DOC\t".               "UREF_CMAX\t".                 "FRAC_HITS_POSSIBLE\t"
-                  ."FRAC_BASES_POSSIBLE\t".    "MEAN_HIT_LENGTH\t".           "MEAN_LINEAR_HIT_LENGTH\t"
+                  ."UREF_DOC\t".               "ROLLUP_DOC\t".                "UREF_CMAX\t"
+                  ."FRAC_HITS_POSSIBLE\t".     "FRAC_BASES_POSSIBLE\t".       "MEAN_HIT_LENGTH\t"
+                  ."MEAN_LINEAR_HIT_LENGTH\t"
                   #------------------------------------------------------------------------------------------
                   ."CONTIG_COUNT\t".           "CONTIG_MEAN_LEN\t".           "CONTIG_STDEV_LEN\t"
                   ."CONTIG_MINLEN\t".          "CONTIG_MAXLEN\t".             "CONTIG_HISTO(LEN:FREQ)\t"
@@ -1323,6 +1326,7 @@ sub computeRepliconData {
 
         my $linearDOC = sprintf("%.4f", $totalBpMapped / $_[0]->{N_O_COV_HREF}->{$gi}->{LINLEN});
         my $uniqueDOC = sprintf("%.4f", $totalBpMapped / $uniqueDBlength);
+        my $rollupDOC = sprintf("%.4f", $totalBpMapped / $uniqueDBlength);
         my $mean_hit_length = 
             sprintf("%.4f", $totalBpMapped / $_[0]->{GI2MERGEDFRAGS_HREF}->{$gi}->{HITCOUNT});
         my $mean_linear_hit_length =
@@ -1365,6 +1369,7 @@ sub computeRepliconData {
                       .$totalBpMapped."\t"                                    # total BP mapped
                       .$linearDOC."\t"                                        # linear depth-of-coverage
                       .$uniqueDOC."\t"                                        # unique genome depth-of-coverage
+                      .$rollupDOC."\t"                                        # unique genome depth-of-coverage for rollup
                       .$uRefCmax."\t"                                         # max coverage of unique DB given sample input
                       .$fracHitsPossible."\t"                                 # fraction of all possible hits
                       .$fracBasesPossible."\t"                                # fraction of all possible bases
@@ -1574,7 +1579,8 @@ sub genTree {
             my $readcount     = $_[1]->{$gi}->{READCOUNT};
             my $fullReadHits  = 0; #$_[2]->{$gi}->{FULLREADHITS};
             my $totalBPmapped = $_[2]->{$gi}->{TOTALBPMAPPED};
-        
+            my $rollupDOC     = sprintf("%.4f", $totalBPmapped/$usize);
+
             $hitTree{GI}->{$gi}->{REFSIZE}       = $refsize;
             $hitTree{GI}->{$gi}->{USIZE}         = $usize;
             $hitTree{GI}->{$gi}->{LINLEN}        = $linlen;
@@ -1582,6 +1588,7 @@ sub genTree {
             $hitTree{GI}->{$gi}->{HITCOUNT}      = $hitcount;
             $hitTree{GI}->{$gi}->{HITCOUNT_P}    = $hitcountP;
             $hitTree{GI}->{$gi}->{READCOUNT}     = $readcount;
+            $hitTree{GI}->{$gi}->{ROLLUPDOC}     = $rollupDOC;
             $hitTree{GI}->{$gi}->{FULLREADHITS}  = $fullReadHits;
             $hitTree{GI}->{$gi}->{MAPPED}        = $totalBPmapped;
             $hitTree{GI}->{$gi}->{HISTO}         = $giHisto{$gi};
@@ -1628,6 +1635,7 @@ sub genTree {
             $hitTree{SS}->{$strainName}->{HITCOUNT}      += $hitcount;
             $hitTree{SS}->{$strainName}->{HITCOUNT_P}    += $hitcountP;
             $hitTree{SS}->{$strainName}->{READCOUNT}     += $readcount;
+            $hitTree{SS}->{$strainName}->{ROLLUPDOC}     += $rollupDOC;
             $hitTree{SS}->{$strainName}->{MAPPED}        += $totalBPmapped;
             $hitTree{SS}->{$strainName}->{FULLREADHITS}  += $fullReadHits;
             $hitTree{SS}->{$strainName}->{CHILDREN}->{NAMES}->{$gi} = ();
@@ -1639,6 +1647,7 @@ sub genTree {
             $hitTree{S}->{$speciesName}->{HITCOUNT}      += $hitcount;
             $hitTree{S}->{$speciesName}->{HITCOUNT_P}    += $hitcountP;
             $hitTree{S}->{$speciesName}->{READCOUNT}     += $readcount;
+            $hitTree{S}->{$speciesName}->{ROLLUPDOC}     += $rollupDOC;
             $hitTree{S}->{$speciesName}->{MAPPED}        += $totalBPmapped;
             $hitTree{S}->{$speciesName}->{FULLREADHITS}  += $fullReadHits;
             $hitTree{S}->{$speciesName}->{CHILDREN}->{NAMES}->{$strainName} = ();
@@ -1650,6 +1659,7 @@ sub genTree {
             $hitTree{G}->{$genusName}->{HITCOUNT}      += $hitcount;
             $hitTree{G}->{$genusName}->{HITCOUNT_P}    += $hitcountP;
             $hitTree{G}->{$genusName}->{READCOUNT}     += $readcount;
+            $hitTree{G}->{$genusName}->{ROLLUPDOC}     += $rollupDOC;
             $hitTree{G}->{$genusName}->{MAPPED}        += $totalBPmapped;
             $hitTree{G}->{$genusName}->{FULLREADHITS}  += $fullReadHits;
             $hitTree{G}->{$genusName}->{CHILDREN}->{NAMES}->{$speciesName} = ();
@@ -1661,6 +1671,7 @@ sub genTree {
             $hitTree{F}->{$familyName}->{HITCOUNT}      += $hitcount;
             $hitTree{F}->{$familyName}->{HITCOUNT_P}    += $hitcountP;
             $hitTree{F}->{$familyName}->{READCOUNT}     += $readcount;
+            $hitTree{F}->{$familyName}->{ROLLUPDOC}     += $rollupDOC;
             $hitTree{F}->{$familyName}->{MAPPED}        += $totalBPmapped;
             $hitTree{F}->{$familyName}->{FULLREADHITS}  += $fullReadHits;
             $hitTree{F}->{$familyName}->{CHILDREN}->{NAMES}->{$genusName} = ();
@@ -1672,6 +1683,7 @@ sub genTree {
             $hitTree{O}->{$orderName}->{HITCOUNT}      += $hitcount;
             $hitTree{O}->{$orderName}->{HITCOUNT_P}    += $hitcountP;
             $hitTree{O}->{$orderName}->{READCOUNT}     += $readcount;
+            $hitTree{O}->{$orderName}->{ROLLUPDOC}     += $rollupDOC;
             $hitTree{O}->{$orderName}->{MAPPED}        += $totalBPmapped;
             $hitTree{O}->{$orderName}->{FULLREADHITS}  += $fullReadHits;
             $hitTree{O}->{$orderName}->{CHILDREN}->{NAMES}->{$familyName} = ();
@@ -1683,6 +1695,7 @@ sub genTree {
             $hitTree{C}->{$className}->{HITCOUNT}      += $hitcount;
             $hitTree{C}->{$className}->{HITCOUNT_P}    += $hitcountP;
             $hitTree{C}->{$className}->{READCOUNT}     += $readcount;
+            $hitTree{C}->{$className}->{ROLLUPDOC}     += $rollupDOC;
             $hitTree{C}->{$className}->{MAPPED}        += $totalBPmapped;
             $hitTree{C}->{$className}->{FULLREADHITS}  += $fullReadHits;
             $hitTree{C}->{$className}->{CHILDREN}->{NAMES}->{$orderName} = ();
@@ -1694,6 +1707,7 @@ sub genTree {
             $hitTree{P}->{$phylumName}->{HITCOUNT}      += $hitcount;
             $hitTree{P}->{$phylumName}->{HITCOUNT_P}    += $hitcountP;
             $hitTree{P}->{$phylumName}->{READCOUNT}     += $readcount;
+            $hitTree{P}->{$phylumName}->{ROLLUPDOC}     += $rollupDOC;
             $hitTree{P}->{$phylumName}->{MAPPED}        += $totalBPmapped;
             $hitTree{P}->{$phylumName}->{FULLREADHITS}  += $fullReadHits;
             $hitTree{P}->{$phylumName}->{CHILDREN}->{NAMES}->{$className} = ();
@@ -2288,8 +2302,7 @@ sub mergeOverlappingHits {                                                      
         # Record no. of actual hits to the reference GI
         $gi2mergedFrags{$gi}->{HITCOUNT}   = $_[0]->{$gi}->{HITCOUNT};  
         $gi2mergedFrags{$gi}->{HITCOUNT_P} = $_[0]->{$gi}->{HITCOUNT_P};  
-        $gi2mergedFrags{$gi}->{READCOUNT}  = $_[0]->{$gi}->{READCOUNT};  
-        
+        $gi2mergedFrags{$gi}->{READCOUNT}  = $_[0]->{$gi}->{READCOUNT};      
     } #GI
     
     return \%gi2mergedFrags;
@@ -2611,7 +2624,6 @@ sub parseSAM {
 						$MAPPED_PLASMID_RAWREADS_CNT++ if $uniqueGIlengths->{$gi}->{PLASMID};
 						$readlist->{$1} = 1;
 					}
-
                 } #FIELDS[2]
                 else {
                     print "  **Unrecognized mapping entry!**  [".$fields[2]."]\n";

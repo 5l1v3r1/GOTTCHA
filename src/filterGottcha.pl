@@ -193,7 +193,7 @@ sub exportAbundances {
 
     my $wantedRank = $taxAbbrRevLookup{ $_[0]->{TAXLEVEL} };
     #my @headers = @{ $_[0]->{HEADERS} };
-    my @headers = ("LINEAR_LENGTH", "TOTAL_BP_MAPPED", "HIT_COUNT", "HIT_COUNT_PLASMID", "READ_COUNT", "LINEAR_DOC", "NORM_COV" );
+    my @headers = ("LINEAR_LENGTH", "TOTAL_BP_MAPPED", "HIT_COUNT", "HIT_COUNT_PLASMID", "READ_COUNT", "LINEAR_DOC", "UREF_DOC" );
     
     # Headers
     print $OUTFILE $_[0]->{TAXLEVEL}."\t".join("\t", @headers)."\n";
@@ -235,7 +235,7 @@ sub displayRollups {
 #                         "P"  => "PHYLUM",
 #                        );
 
-    my @headers = ("LINEAR_LENGTH", "TOTAL_BP_MAPPED", "HIT_COUNT", "HIT_COUNT_PLASMID", "READ_COUNT", "LINEAR_DOC", "NORM_COV");
+    my @headers = ("LINEAR_LENGTH", "TOTAL_BP_MAPPED", "HIT_COUNT", "HIT_COUNT_PLASMID", "READ_COUNT", "LINEAR_DOC", "NORM_COV", "ROLLUP_DOC");
 
     foreach my $taxAbbr (@taxAbbrs) {
         print "\n\n".$taxAbbrLookup{$taxAbbr}."\t".join("\t", @headers)."\n";
@@ -250,7 +250,7 @@ sub displayRollups {
 # ARGS: \%inputOptions, \%ancestry
 sub outputLineage {
 
-    my @headers = ("LINEAR_LENGTH", "TOTAL_BP_MAPPED", "HIT_COUNT", "HIT_COUNT_PLASMID", "READ_COUNT", "LINEAR_DOC", "NORM_COV");
+    my @headers = ("LINEAR_LENGTH", "TOTAL_BP_MAPPED", "HIT_COUNT", "HIT_COUNT_PLASMID", "READ_COUNT", "LINEAR_DOC", "NORM_COV", "ROLLUP_DOC");
 
     #my %taxLevel = ( "STRAIN"  => "90",
     #                 "SPECIES" => "80",
@@ -328,7 +328,10 @@ sub filterTable {
         #    $test_state = 1;
         #    <STDIN>;
         #}
-    
+
+        # update rollup DOC at strain level
+        $_[1]->{$strain}->{ROLLUP_DOC} = $_[1]->{$strain}->{TOTAL_BP_MAPPED}/$_[1]->{$strain}->{UNIQUE_DB_LENGTH};
+
         # Filter Stage1: Coverage Threshold
         delete $_[1]->{$strain} 
             if (
@@ -376,6 +379,7 @@ sub filterTable {
             $ancestry{SS}->{$strain}->{HIT_COUNT}         += $_[1]->{$strain}->{HIT_COUNT};
             $ancestry{SS}->{$strain}->{HIT_COUNT_PLASMID} += $_[1]->{$strain}->{HIT_COUNT_PLASMID};
             $ancestry{SS}->{$strain}->{READ_COUNT}        += $_[1]->{$strain}->{READ_COUNT};
+            $ancestry{SS}->{$strain}->{ROLLUP_DOC}        += $_[1]->{$strain}->{ROLLUP_DOC};
         }
         my $sum = 0;
         foreach my $strain (@strains) {
@@ -387,7 +391,6 @@ sub filterTable {
         foreach my $strain (@strains) {
             my $norm_cov = $ancestry{SS}->{$strain}->{LINEAR_DOC} / $sum;
             $ancestry{SS}->{$strain}->{NORM_COV} = $norm_cov;
-            
             $max = $norm_cov unless ($max > $norm_cov);
         }
         
@@ -422,7 +425,7 @@ sub filterTable {
         $ancestry{S}->{$species}->{HIT_COUNT}         += $_[1]->{$org}->{HIT_COUNT};
         $ancestry{S}->{$species}->{HIT_COUNT_PLASMID} += $_[1]->{$org}->{HIT_COUNT_PLASMID};
         $ancestry{S}->{$species}->{READ_COUNT}        += $_[1]->{$org}->{READ_COUNT};
-        
+        $ancestry{S}->{$species}->{ROLLUP_DOC}        += $_[1]->{$org}->{ROLLUP_DOC};
         
     } #ORG
 
@@ -455,8 +458,6 @@ sub filterTable {
     ##########################
     # HIGHER ROLL-UP
     ##########################
-    
-    
     {
         my @taxAbbr = ("S", "G", "F", "O", "C", "P");
         foreach my $taxAbbrIdx (1..5) {
@@ -486,6 +487,7 @@ sub filterTable {
                     $ancestry{$currTaxAbbr}->{$currRankName}->{HIT_COUNT}         += $ancestry{$prevTaxAbbr}->{$prevRankName}->{HIT_COUNT};
                     $ancestry{$currTaxAbbr}->{$currRankName}->{HIT_COUNT_PLASMID} += $ancestry{$prevTaxAbbr}->{$prevRankName}->{HIT_COUNT_PLASMID};
                     $ancestry{$currTaxAbbr}->{$currRankName}->{READ_COUNT}        += $ancestry{$prevTaxAbbr}->{$prevRankName}->{READ_COUNT};
+                    $ancestry{$currTaxAbbr}->{$currRankName}->{ROLLUP_DOC}        += $ancestry{$prevTaxAbbr}->{$prevRankName}->{ROLLUP_DOC};
                 }
                 else {
                     die "*FATAL*: Could not place $prevRankName [$prevTaxAbbr] into parent [$currTaxAbbr]\n";
@@ -748,4 +750,3 @@ HELP
 print "$HELP\n";
 exit 1;
 }
-
