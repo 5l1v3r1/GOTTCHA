@@ -153,7 +153,7 @@ Note: If you have any difficulty obtaining the databases, please contact Po-E Li
 
 The procedure includes 3 major steps: (1) split-trimming the input data, (2) mapping reads 
 to a GOTTCHA database using BWA, and (3) profiling/filtering the results. These steps have
-been wrapped into a sigle script called 'gottcha.pl'. User will need to provide a FASTQ file
+been wrapped into a single script called 'gottcha.pl'. User will need to provide a FASTQ file
 as input and specify the location and name of the database.
 
 Here is the general usage to run GOTTCHA:
