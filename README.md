@@ -191,7 +191,7 @@ Summary table:
  ----------------- | -------------------------------------------------------------------
  LEVEL             | taxonomic rank
  NAME              | taxonomic name
- REL_ABUNDANCE     | relative abundance (equivalent to NORM_COV by default)
+ REL_ABUNDANCE     | relative abundance (equivalent to ROLLUP_DOC by default)
  LINEAR_LENGTH     | number of non-overlapping bases covering the signatures
  TOTAL_BP_MAPPED   | summation of all hit lengths recruited to signatures
  HIT_COUNT         | number of hits recruited to signatures
@@ -237,42 +237,3 @@ We would like to thank Jason Gans for critical discussions on classification and
 learning techniques, and Shihai Feng for the generation of synthetic datasets.
 
 This project is funded by U.S. Defense Threat Reduction Agency [R-00059-12-0 and R-00332-13-0 to P.S.G.C.].
-
--------------------------------------------------------------------
-## CHANGE LOG
-Version 1.0b:
-> Bug fix for database inconsistency.
-
-Version 1.0a:
-> 1. Support multiple input files.
-> 2. Add "--dumpSam" option to dump the mapping result.
-> 3. Fix minor bugs.
-
-Version 1.0:
-> 1. Report the number of reads that hit to plasmids and provide an option to ignore them.
-> 2. Report the number of READ_COUNT.
-
-Version 0.9e:
-> 1. Fix minor bugs
-> 2. Amend the display of runtime information
-
-Version 0.9d:
-> 1. Splitrim allows lower-case bases in fastq file
-> 2. Fix bugs that fail to specify output directory
-> 3. Minor bug fix
-
-Version 0.9c:
-> 1. Fix FASTQ header compatibility
-> 2. Provide more information while running GOTTCHA
-
-Version 0.9b (05/12/2014):
-> 1. Add '--stDir' option for pre-splitrimmed input file
-> 1. Performance improvement
-
-Version 0.9a (04/30/2014):
-> 1. Provide bwaOpt option for user to use their own parameters to run BWA-MEM.
-> 2. Use absolute path to run system calls
-> 3. Provide 'relAbui' option to choose column to calculate relative abundance.
-
-Version 0.9:
-> 1. Initial release
