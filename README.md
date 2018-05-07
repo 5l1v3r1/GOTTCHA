@@ -193,12 +193,13 @@ Summary table:
  NAME              | taxonomic name
  REL_ABUNDANCE     | relative abundance (equivalent to NORM_COV by default)
  LINEAR_LENGTH     | number of non-overlapping bases covering the signatures
- TOTAL_BP_MAPPED   | sum total of all hit lengths recruited to signatures
+ TOTAL_BP_MAPPED   | summation of all hit lengths recruited to signatures
  HIT_COUNT         | number of hits recruited to signatures
  HIT_COUNT_PLASMID | number of hits recruited to signatures
  READ_COUNT        | number of reads recruited to signatures
  LINEAR_DOC        | linear depth-of-coverage (TOTAL_BP_MAPPED / LINEAR_LENGTH)
- NORM_COV          | normalized linear depth-of-coverage (LINEAR_DOC / SUM(LINEAR_DOC in certain level))
+ NORM_COV          | normalized linear depth-of-coverage (LINEAR_DOC / Σ<sub>i=taxonomies in the centain level</sub> LINEAR_DOC<sub>i</sub>)
+ ROLLUP_DOC        | summation of average depth of coverage of unique signature length of each strain belonging to this taxonomy ( Σ<sub>i=strains</sub> ( TOTAL_BP_MAPPED<sub>i</sub> / total_unique_signature_length<sub>i</sub>) )
 
 There are two report modes available. Other than a summary table, "full" report 
 mode will report a table with more detail information from unfiltered results. 
