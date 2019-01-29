@@ -38,8 +38,8 @@ in the "test" directory. More details are stated in the INSTRUCTION section.
 
 3. Downloading lookup table and species-level database from our web server:
  
-        $ wget ftp://ftp.lanl.gov/public/genome/gottcha/GOTTCHA_database_v20150825/GOTTCHA_lookup.tar.gz
-        $ wget ftp://ftp.lanl.gov/public/genome/gottcha/GOTTCHA_database_v20150825/GOTTCHA_BACTERIA_c4937_k24_u30_xHUMAN3x.species.tar.gz
+        $ wget https://edge-dl.lanl.gov/gottcha/GOTTCHA_database_v20150825/GOTTCHA_lookup.tar.gz
+        $ wget https://edge-dl.lanl.gov/gottcha/GOTTCHA_database_v20150825/GOTTCHA_BACTERIA_c4937_k24_u30_xHUMAN3x.species.tar.gz
    
    If you have any difficulty obtaining the databases, please contact Po-E Li <po-e@lanl.gov>.
 
@@ -70,16 +70,18 @@ step-by-step, please read README_FULL.md.
 -------------------------------------------------------------------
 ### Obtaining GOTTCHA
 
-The source codes can be downloading from [here](https://github.com/LANL-Bioinformatics/GOTTCHA).
+The source codes can be downloading from [here](https://bitbucket.org/poeli/gottcha).
 The pre-computed databases need to be downloaded separately from our web server.
 Please see below in the [Obtaining Pre-computed Databases] section.
        
 You can use "git" to obtain the package:
 
-        $ git clone https://github.com/LANL-Bioinformatics/GOTTCHA
+        $ git clone https://github.com/poeli/gottcha
 
 or download the compressed archive in
- [zip](https://github.com/LANL-Bioinformatics/GOTTCHA/archive/master.zip)
+ [zip](https://github.com/poeli/gottcha/get/master.zip),
+ [gz](https://github.com/poeli/gottcha/get/master.tar.gz) or 
+ [bz2](https://github.com/poeli/gottcha/get/master.tar.bz2).
 
 -------------------------------------------------------------------
 ### Installation
@@ -111,9 +113,9 @@ species-level signature database that was produced by eliminating shared 24-mer 
 3514 bacterial replicons (c3514; includes both chromosomes and plasmids) and 3 human genomes (xHuman3X), 
 while retaining a minimum of 24bp of unique fragments (u24).
 
-The compressed database archives are available for users to download from our ftp server:
+The compressed database archives are available for users to download from our web server:
  
- > ftp://ftp.lanl.gov/public/genome/gottcha/
+ > https://edge-dl.lanl.gov/gottcha/GOTTCHA_database_v20150825/
 
 GOTTCHA requires a taxanomic lookup table (GOTTCHA_lookup.tar.gz) and a pre-computed
 database (e.g: GOTTCHA_BACTERIA_c3514_k24_u24_xHUMAN3x.species.tar.gz) to classify reads.
@@ -122,13 +124,13 @@ corresponding *.md5 file for verification.
 
 You can use the 'wget' command to download both archives, one at a time:
 
-        $ wget ftp://ftp.lanl.gov/public/genome/gottcha/GOTTCHA_database_v20150825/GOTTCHA_lookup.tar.gz
-        $ wget ftp://ftp.lanl.gov/public/genome/gottcha/GOTTCHA_database_v20150825/GOTTCHA_BACTERIA_c4937_k24_u30_xHUMAN3x.species.tar.gz
+        $ wget https://edge-dl.lanl.gov/gottcha/GOTTCHA_database_v20150825/GOTTCHA_lookup.tar.gz
+        $ wget https://edge-dl.lanl.gov/gottcha/GOTTCHA_database_v20150825/GOTTCHA_BACTERIA_c4937_k24_u30_xHUMAN3x.species.tar.gz
 
 Then use 'tar' to unpack and decompress both archives:
 
         $ tar -zxvf GOTTCHA_lookup.tar.gz
-        $ tar -zxvf GOTTCHA_BACTERIA_c4937_k24_u30_xHUMAN3x.species.tar.gz
+        $ tar -zxvf GOTTCHA_BACTERIA_c3514_k24_u24_xHUMAN3x.species.tar.gz
 
 Files will be expanded to ./database directory by default.
 
@@ -144,7 +146,24 @@ Files will be expanded to ./database directory by default.
  > 
 
 Here is a list of the available pre-computed databases. Note that these databases are
-also available in FASTA format at gottcha/[VERSION]/FASTA/..
+also available in FASTA format at the FASTA/ directory:
+
+  * GOTTCHA_BACTERIA_c3514_k24_u24.class.tar.gz (4.6GB)
+  * GOTTCHA_BACTERIA_c3514_k24_u24.family.tar.gz (4.6GB)
+  * GOTTCHA_BACTERIA_c3514_k24_u24.genus.tar.gz (4.5GB)
+  * GOTTCHA_BACTERIA_c3514_k24_u24.order.tar.gz (4.6GB)
+  * GOTTCHA_BACTERIA_c3514_k24_u24.phylum.tar.gz (4.6GB)
+  * GOTTCHA_BACTERIA_c3514_k24_u24.species.tar.gz (4.3GB)
+  * GOTTCHA_BACTERIA_c3514_k24_u24.strain.tar.gz (3.9GB)
+  * GOTTCHA_BACTERIA_c3514_k24_u24_xHUMAN3x.genus.tar.gz (4.5GB)
+  * GOTTCHA_BACTERIA_c3514_k24_u24_xHUMAN3x.species.tar.gz (4.3GB)
+  * GOTTCHA_BACTERIA_c3514_k24_u24_xHUMAN3x.strain.tar.gz (3.8GB)
+  * GOTTCHA_VIRUSES_c3498_k85_u24.genus.tar.gz (71MB)
+  * GOTTCHA_VIRUSES_c3498_k85_u24.species.tar.gz (68MB)
+  * GOTTCHA_VIRUSES_c3498_k85_u24.strain.tar.gz (68MB)
+  * GOTTCHA_VIRUSES_c3498_k85_u24_xHUMAN3x.genus.tar.gz (71MB)
+  * GOTTCHA_VIRUSES_c3498_k85_u24_xHUMAN3x.species.tar.gz (68MB)
+  * GOTTCHA_VIRUSES_c3498_k85_u24_xHUMAN3x.strain.tar.gz (68MB)
 
 Note: If you have any difficulty obtaining the databases, please contact Po-E Li <po-e@lanl.gov>.
 
@@ -153,7 +172,7 @@ Note: If you have any difficulty obtaining the databases, please contact Po-E Li
 
 The procedure includes 3 major steps: (1) split-trimming the input data, (2) mapping reads 
 to a GOTTCHA database using BWA, and (3) profiling/filtering the results. These steps have
-been wrapped into a sigle script called 'gottcha.pl'. User will need to provide a FASTQ file
+been wrapped into a single script called 'gottcha.pl'. User will need to provide a FASTQ file
 as input and specify the location and name of the database.
 
 Here is the general usage to run GOTTCHA:
@@ -191,15 +210,14 @@ Summary table:
  ----------------- | -------------------------------------------------------------------
  LEVEL             | taxonomic rank
  NAME              | taxonomic name
- REL_ABUNDANCE     | relative abundance (equivalent to ROLLUP_DOC by default)
+ REL_ABUNDANCE     | relative abundance (equivalent to NORM_COV by default)
  LINEAR_LENGTH     | number of non-overlapping bases covering the signatures
- TOTAL_BP_MAPPED   | summation of all hit lengths recruited to signatures
+ TOTAL_BP_MAPPED   | sum total of all hit lengths recruited to signatures
  HIT_COUNT         | number of hits recruited to signatures
  HIT_COUNT_PLASMID | number of hits recruited to signatures
  READ_COUNT        | number of reads recruited to signatures
  LINEAR_DOC        | linear depth-of-coverage (TOTAL_BP_MAPPED / LINEAR_LENGTH)
- NORM_COV          | normalized linear depth-of-coverage (LINEAR_DOC / Σ<sub>i=taxonomies in the centain level</sub> LINEAR_DOC<sub>i</sub>)
- ROLLUP_DOC        | summation of average depth of coverage of unique signature length of each strain belonging to this taxonomy ( Σ<sub>i=strains</sub> ( TOTAL_BP_MAPPED<sub>i</sub> / total_unique_signature_length<sub>i</sub>) )
+ NORM_COV          | normalized linear depth-of-coverage (LINEAR_DOC / SUM(LINEAR_DOC in certain level))
 
 There are two report modes available. Other than a summary table, "full" report 
 mode will report a table with more detail information from unfiltered results. 
@@ -237,3 +255,42 @@ We would like to thank Jason Gans for critical discussions on classification and
 learning techniques, and Shihai Feng for the generation of synthetic datasets.
 
 This project is funded by U.S. Defense Threat Reduction Agency [R-00059-12-0 and R-00332-13-0 to P.S.G.C.].
+
+-------------------------------------------------------------------
+## CHANGE LOG
+Version 1.0b:
+> Bug fix for database inconsistency.
+
+Version 1.0a:
+> 1. Support multiple input files.
+> 2. Add "--dumpSam" option to dump the mapping result.
+> 3. Fix minor bugs.
+
+Version 1.0:
+> 1. Report the number of reads that hit to plasmids and provide an option to ignore them.
+> 2. Report the number of READ_COUNT.
+
+Version 0.9e:
+> 1. Fix minor bugs
+> 2. Amend the display of runtime information
+
+Version 0.9d:
+> 1. Splitrim allows lower-case bases in fastq file
+> 2. Fix bugs that fail to specify output directory
+> 3. Minor bug fix
+
+Version 0.9c:
+> 1. Fix FASTQ header compatibility
+> 2. Provide more information while running GOTTCHA
+
+Version 0.9b (05/12/2014):
+> 1. Add '--stDir' option for pre-splitrimmed input file
+> 1. Performance improvement
+
+Version 0.9a (04/30/2014):
+> 1. Provide bwaOpt option for user to use their own parameters to run BWA-MEM.
+> 2. Use absolute path to run system calls
+> 3. Provide 'relAbui' option to choose column to calculate relative abundance.
+
+Version 0.9:
+> 1. Initial release
